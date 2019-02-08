@@ -3,8 +3,14 @@ var app = express()
 
 //body-parser
 const bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+//query
+var client = require('./postgreSQL/query')
+
+
+
 
 const hbs = require('hbs')
     //require('./hbs/helpers');
@@ -31,12 +37,13 @@ app.get('/login', function(req, res) {
 })
 
 app.get('/register', function(req, res) {
-    res.render('register')
+    res.render('register');
 })
 
-app.post('/exito', function(req, res) {
+app.post('/exito', (req, res) => {
     res.send(`<h1>Hola ${req.body.email}!</h1>`);
-    console.log(`sisas ${req.body.email}`);
+    console.log(`sisas ${req}`);
+    client.insertCliente();
 })
 
 app.listen(port, () => {
