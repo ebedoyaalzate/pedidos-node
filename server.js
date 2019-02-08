@@ -41,9 +41,9 @@ app.get('/register', function(req, res) {
 })
 
 app.post('/exito', (req, res) => {
-    res.send(`<h1>Hola ${req.body.email}!</h1>`);
-    console.log(`sisas ${req}`);
-    client.insertCliente();
+    res.send(`<h1> ${req.body.email}!</h1>`);
+    console.log(req.body);
+    //client.insertCliente();
 })
 
 app.listen(port, () => {
