@@ -7,7 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 //query
-var client = require('./postgreSQL/query')
+var client = require('./postgreSQL/clienteDAO')
 
 
 
@@ -43,7 +43,7 @@ app.get('/register', function(req, res) {
 app.post('/exito', (req, res) => {
     res.send(`<h1> ${req.body.email}!</h1>`);
     console.log(req.body);
-    //client.insertCliente();
+    client.obtenerClienteEmail('Esteban@nhjds');
 })
 
 app.listen(port, () => {
