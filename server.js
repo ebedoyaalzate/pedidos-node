@@ -32,9 +32,6 @@ app.get('/', function(req, res) {
     res.render('home', {
         nombre: 'Esteban'
     });
-    city.obtenerCodigo('Medellín')
-        //client.obtenerProductoNombre('mensaje')
-        //product.comprarProducto('mensaje', 22);
 })
 
 app.get('/login', function(req, res) {

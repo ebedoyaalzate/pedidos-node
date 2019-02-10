@@ -1,8 +1,11 @@
 const productoDAO = require('../postgreSQL/DAO/productoDAO')
 
 var agregarProducto = async(producto) => {
-    if (existeProductoNombre(producto.nombre)) {
-        await productoDAO.actualizarProducto(producto.nombre, producto.cantidad, producto.precio)
+    var existeProductoN = await existeProductoNombre(producto.nombre)
+    if (existeProductoN) {
+        var result = await productoDAO.obtenerProductoNombre(nombre);
+        var cant = result.cantidad + producto.cantidad;
+        await productoDAO.actualizarProducto(producto.nombre, cant, producto.precio)
     } else {
         await productoDAO.insertarProducto(producto.nombre, producto.cantidad, producto.precio)
     }
@@ -14,8 +17,8 @@ var comprarProducto = async(producto, cantidad) => {
     if (pdt.cantidad < cantidad) {
         return { error: true, mensaje: 'No se encuentra suficiente cantidad' }
     } else {
-        pdt.cantidad = pdt.cantidad - cantidad;
-        await productoDAO.actualizarProducto(pdt.nombre, pdt.cantidad, pdt.precio)
+        var cant = pdt.cantidad - cantidad;
+        await productoDAO.actualizarProducto(pdt.nombre, cant, pdt.precio)
         return { error: false, mensaje: 'Exitoso' }
     }
 

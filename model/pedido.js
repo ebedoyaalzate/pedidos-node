@@ -3,14 +3,15 @@ const producto = require('./producto')
 
 var agregarPedido = async(pedido) => {
     try {
-        var prd = await producto.obtenerProductoNombre(pedido.nombre)
+        var compra = await producto.comprarProducto(pedido.producto, pedido.cantidad)
+        if (compra.error) return compra
+
+        var prd = await producto.obtenerProductoNombre(pedido.producto)
         var fecha = fechaActual()
         var hora = horaActual()
 
-        await pedidoDAO.insertarPedido(pedido.cantidad, fecha, hora, prd.id_producto, pedido.idCliente)
-        await producto.comprarProducto(pedido.nombre, pedido.cantidad);
-
-        return { error: false, mensaje: 'Exitoso' }
+        var result = await pedidoDAO.insertarPedido(pedido.cantidad, fecha, hora, prd.id_producto, pedido.idCliente)
+        return result
     } catch {
         return { error: true, mensaje: 'Error insertando pedido' }
     }
