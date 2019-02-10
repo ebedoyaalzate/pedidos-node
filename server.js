@@ -6,8 +6,9 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-//query
-var product = require('./postgreSQL/DAO/pedidoDAO')
+//pruebas
+var product = require('./model/producto')
+var client = require('./postgreSQL/DAO/productoDAO')
 
 
 
@@ -30,6 +31,8 @@ app.get('/', function(req, res) {
     res.render('home', {
         nombre: 'Esteban'
     });
+    //client.obtenerProductoNombre('mensaje')
+    //product.comprarProducto('mensaje', 22);
 })
 
 app.get('/login', function(req, res) {
@@ -43,8 +46,6 @@ app.get('/register', function(req, res) {
 app.post('/exito', (req, res) => {
     res.send(`<h1> ${req.body.email}!</h1>`);
     console.log(req.body);
-    let now = new Date();
-    product.obtenerPedidoID(3);
 })
 
 app.listen(port, () => {

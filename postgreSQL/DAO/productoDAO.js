@@ -1,61 +1,66 @@
-var conection = require('../conection').conection
+const conection = require('../conection')
 
 
-var insertarProducto = (id, nombre, cantidad, precio) => {
-    conection.connect()
-    conection.query('INSERT INTO public.producto(id, nombre, cantidad,precio) VALUES ($1,$2,$3,$4);', [id, nombre, cantidad, precio])
-        .then(response => {
-            console.log(response.rows)
-            conection.end()
-        })
-        .catch(err => {
-            console.log(err);
-            conection.end()
-        })
+var insertarProducto = async(nombre, cantidad, precio) => {
+    try {
+        var result = await conection.query('INSERT INTO public.producto( nombre, cantidad,precio) VALUES ($1,$2,$3);', [nombre, cantidad, precio])
+        return { error: false, mensaje: 'Se inserto correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No se inserto correctamente' }
+    }
 }
 
-var obtenerProducto = (id) => {
-    conection.connect()
-    conection.query('SELECT * from public.producto where id=$1;', [id])
-        .then(response => {
-            console.log(response.rows)
-            conection.end()
-        })
-        .catch(err => {
-            console.log(err);
-            conection.end()
-        })
+var obtenerProductoID = async(id) => {
+    try {
+        var result = await conection.query('SELECT * from public.producto where id=$1;', [id])
+        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No existe producto con ese ID' }
+    }
 }
 
-var actualizarProducto = (id, nombre, cantidad, precio) => {
-    conection.connect()
-    conection.query('UPDATE public.producto SET ID=$1,nombre=$2, cantidad=$3,precio=$4;', [id, nombre, cantidad, precio])
-        .then(response => {
-            console.log(response.rows)
-            conection.end()
-        })
-        .catch(err => {
-            console.log(err);
-            conection.end()
-        })
+var obtenerProductoNombre = async(nombre) => {
+    try {
+        var result = await conection.query('SELECT * from public.producto where nombre=$1;', [nombre])
+        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No existe producto con ese nombre' }
+    }
+
 }
 
-var eliminarProducto = (id) => {
-    conection.connect()
-    conection.query('DELETE from public.producto where ID=$1;', [id])
-        .then(response => {
-            console.log(response.rows)
-            conection.end()
-        })
-        .catch(err => {
-            console.log(err);
-            conection.end()
-        })
+var actualizarProducto = async(nombre, cantidad, precio) => {
+    try {
+        var result = await conection.query('UPDATE public.producto SET nombre=$1, cantidad=$2,precio=$3 WHERE nombre=$1;', [nombre, cantidad, precio])
+        return { error: false, mensaje: 'Se actualizo correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No se actualizo correctamente' }
+    }
+}
+
+var eliminarProducto = async(id) => {
+    try {
+        var result = await conection.query('DELETE from public.producto where ID=$1;', [id])
+        return { error: false, mensaje: 'Se elimino correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No se elimino correctamente' }
+    }
+}
+
+var obtenerProductos = async() => {
+    try {
+        var result = await conection.query('SELECT * from public.producto;')
+        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No se elimino correctamente' }
+    }
 }
 
 module.exports = {
     insertarProducto,
-    obtenerProducto,
+    obtenerProductoID,
+    obtenerProductoNombre,
     actualizarProducto,
-    eliminarProducto
+    eliminarProducto,
+    obtenerProductos
 }

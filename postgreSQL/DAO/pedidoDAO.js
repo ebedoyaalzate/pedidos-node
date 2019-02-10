@@ -1,48 +1,35 @@
-var conection = require('../conection').conection
+const conection = require('../conection').conection
 
 
-var insertarPedido = (cantidad, fecha, hora, idProducto, idCliente) => {
-    conection.connect()
-    conection.query('INSERT INTO public.pedido(cantidad, fecha, hora, id_producto, id_cliente) VALUES ($1,$2,$3,$4,$5);', [cantidad, fecha, hora, idProducto, idCliente])
-        .then(response => {
-            console.log(response.rows)
-            conection.end()
-        })
-        .catch(err => {
-            console.log(err);
-            conection.end()
-        })
+var insertarPedido = async(cantidad, fecha, hora, idProducto, idCliente) => {
+    try {
+        var result = await conection.query('INSERT INTO public.pedido(cantidad, fecha, hora, id_producto, id_cliente) VALUES ($1,$2,$3,$4,$5);', [cantidad, fecha, hora, idProducto, idCliente])
+        return { error: false, mensaje: 'Se inserto correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No se inserto correctamente' }
+    }
 }
 
-var obtenerPedidoID = (id) => {
-    conection.connect()
-    conection.query('SELECT * from public.pedido where id=$1;', [id])
-        .then(response => {
-            console.log(response.rows)
-            conection.end()
-        })
-        .catch(err => {
-            console.log(err);
-            conection.end()
-        })
+var obtenerPedidoCliente = async(idCliente) => {
+    try {
+        var result = await conection.query('SELECT * from public.pedido where id_cliente=$1;', [idCliente])
+        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No existe pedidos con ese cliente' }
+    }
 }
 
-
-var eliminarPedido = (id) => {
-    conection.connect()
-    conection.query('DELETE from public.pedido where ID=$1;', [id])
-        .then(response => {
-            console.log(response.rows)
-            conection.end()
-        })
-        .catch(err => {
-            console.log(err);
-            conection.end()
-        })
+var eliminarPedido = async(id) => {
+    try {
+        var result = await conection.query('DELETE from public.pedido where ID=$1;', [id])
+        return { error: false, mensaje: 'Se elimino correctamente', resultado: result.rows }
+    } catch {
+        return { error: true, mensaje: 'No se elimino correctamente' }
+    }
 }
 
 module.exports = {
     insertarPedido,
-    obtenerPedidoID,
+    obtenerPedidoCliente,
     eliminarPedido
 }
