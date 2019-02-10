@@ -9,6 +9,7 @@ app.use(bodyParser.json())
 //pruebas
 var product = require('./model/producto')
 var client = require('./postgreSQL/DAO/productoDAO')
+var city = require('./model/ciudad')
 
 
 
@@ -31,8 +32,9 @@ app.get('/', function(req, res) {
     res.render('home', {
         nombre: 'Esteban'
     });
-    //client.obtenerProductoNombre('mensaje')
-    //product.comprarProducto('mensaje', 22);
+    city.obtenerCodigo('Medellín')
+        //client.obtenerProductoNombre('mensaje')
+        //product.comprarProducto('mensaje', 22);
 })
 
 app.get('/login', function(req, res) {
