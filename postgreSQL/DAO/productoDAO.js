@@ -13,7 +13,7 @@ var insertarProducto = async(nombre, cantidad, precio) => {
 var obtenerProductoID = async(id) => {
     try {
         var result = await conection.query('SELECT * from public.producto where id=$1;', [id])
-        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows }
+        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows, rows: result.rowCount }
     } catch {
         return { error: true, mensaje: 'No existe producto con ese ID' }
     }
@@ -22,7 +22,7 @@ var obtenerProductoID = async(id) => {
 var obtenerProductoNombre = async(nombre) => {
     try {
         var result = await conection.query('SELECT * from public.producto where nombre=$1;', [nombre])
-        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows }
+        return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows, rows: result.rowCount }
     } catch {
         return { error: true, mensaje: 'No existe producto con ese nombre' }
     }

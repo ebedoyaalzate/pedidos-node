@@ -1,4 +1,4 @@
-const conection = require('../conection').conection
+const conection = require('../conection')
 
 
 var insertarPedido = async(cantidad, fecha, hora, idProducto, idCliente) => {

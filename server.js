@@ -6,16 +6,14 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-//pruebas
+//modelo
 var product = require('./model/producto')
-var client = require('./postgreSQL/DAO/productoDAO')
+var client = require('./model/cliente')
 var city = require('./model/ciudad')
 
 
-
-
 const hbs = require('hbs')
-    //require('./hbs/helpers');
+require('./hbs/helpers');
 
 const port = process.env.PORT || 3000;
 
@@ -28,24 +26,39 @@ hbs.registerPartials(__dirname + '/views/parciales');
 
 
 
-app.get('/', function(req, res) {
+app.get('/', async(req, res) => {
+    var departamentos = await city.listaDepartamentos();
     res.render('home', {
-        nombre: 'Esteban'
+        departamentos
     });
 })
 
-app.get('/login', function(req, res) {
-    res.render('login')
+app.post('/dept', async(req, res) => {
+    var ciudades = await city.obtenerCiudadesDep(req.body.dep);
+    res.send({
+        ciudades
+    });
 })
 
-app.get('/register', function(req, res) {
-    res.render('register');
+app.post('/home', async(req, res) => {
+    res.render('about')
 })
 
-app.post('/exito', (req, res) => {
-    res.send(`<h1> ${req.body.email}!</h1>`);
-    console.log(req.body);
+app.post('/login', async(req, res) => {
+    var response = await client.login(req.body.user, req.body.pass);
+    console.log(response);
+    res.send({
+        response
+    });
 })
+
+app.post('/', async(req, res) => {
+    var resp = await client.crearCliente(req.body)
+    console.log(resp);
+    res.render('home')
+})
+
+
 
 app.listen(port, () => {
     console.log(`Escuchando peticiones por el puerto ${port}`);

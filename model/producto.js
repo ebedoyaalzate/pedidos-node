@@ -40,13 +40,13 @@ var obtenerProductos = async() => {
 
 var existeProductoID = async(id) => {
     var result = await productoDAO.obtenerProductoID(id);
-    if (result.resultado[0]) return true
+    if (result.rowCount < 1) return true
     else return false
 }
 
 var existeProductoNombre = async(nombre) => {
     var result = await productoDAO.obtenerProductoNombre(nombre);
-    if (result.resultado[0]) return true
+    if (result.rowCount < 1) return true
     else return false
 }
 

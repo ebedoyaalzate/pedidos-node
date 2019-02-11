@@ -8,7 +8,7 @@ var listaDepartamentos = async() => {
     });
 
     departamentos = removerRepetidos(departamentos);
-    return departamentos;
+    return departamentos.sort();
 
 }
 
@@ -20,8 +20,7 @@ var obtenerCiudadesDep = async(dep) => {
             ciudades.push(ciudad.municipio)
         }
     });
-    console.log(ciudades);
-    return ciudades
+    return ciudades.sort()
 
 }
 
@@ -45,7 +44,6 @@ var obtenerNombreCiudad = async(codigo) => {
             nombre = ciudad.municipio
         }
     });
-    console.log(codigo);
     return codigo
 }
 

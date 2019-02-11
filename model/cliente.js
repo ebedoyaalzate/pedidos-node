@@ -7,7 +7,8 @@ var crearCliente = async(cliente) => {
     if (!existeClienteE) {
         var existeClienteI = await existeClienteID(cliente.id);
         if (!existeClienteI) {
-            await clienteDAO.insertarCliente(cliente.id, cliente.nombre, cliente.email, cliente.telefono, codigoCiudad, cliente.codigo, cliente.direccion, cliente.clave)
+            var res = await clienteDAO.insertarCliente(cliente.id, cliente.nombre, cliente.email, cliente.telefono, codigoCiudad, cliente.codigo, cliente.direccion, cliente.clave)
+            console.log(res);
         } else {
             return {
                 error: true,
@@ -45,7 +46,7 @@ var actualizarCliente = async(cliente) => {
     }
 }
 
-var login = (user, pass) => {
+var login = async(user, pass) => {
     var cliente
     if (user.indexOf("@") < 0) {
         cliente = await obtenerClienteID(user)
@@ -61,7 +62,7 @@ var login = (user, pass) => {
 var obtenerClienteEmail = async(email) => {
     var result = await clienteDAO.obtenerClienteEmail(email)
     var ciudad
-    if (result.resultado[0]) {
+    if (result.rows > 0) {
         ciudad = result.resultado[0].ciudad
         result.resultado[0].ciudad = await city.obtenerNombreCiudad(ciudad)
         return result.resultado[0]
@@ -74,7 +75,7 @@ var obtenerClienteEmail = async(email) => {
 var obtenerClienteID = async(id) => {
     var result = await clienteDAO.obtenerClienteID(id)
     var ciudad
-    if (result.resultado[0]) {
+    if (result.rows > 0) {
         ciudad = result.resultado[0].ciudad
         result.resultado[0].ciudad = await city.obtenerNombreCiudad(ciudad)
         return result.resultado[0]
@@ -87,13 +88,14 @@ var obtenerClienteID = async(id) => {
 
 var existeClienteID = async(id) => {
     var result = await clienteDAO.obtenerClienteID(id);
-    if (result.resultado[0]) return true
+    if (result.rowCount < 1) return true
     else return false
 }
 
 var existeClienteEmail = async(email) => {
     var result = await clienteDAO.obtenerClienteEmail(email);
-    if (result.resultado[0]) return true
+    console.log(result);
+    if (result.rowCount < 1) return true
     else return false
 }
 
