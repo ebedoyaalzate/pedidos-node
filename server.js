@@ -29,7 +29,8 @@ hbs.registerPartials(__dirname + '/views/parciales');
 
 app.get('/', async(req, res) => {
     //var departamentos = await city.listaDepartamentos();
-    res.render('index');
+    //res.render('index');
+    res.render('home')
 })
 
 app.post('/dept', async(req, res) => {
