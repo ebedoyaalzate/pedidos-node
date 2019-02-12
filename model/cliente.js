@@ -53,9 +53,11 @@ var login = async(user, pass) => {
     } else {
         cliente = await obtenerClienteEmail(user)
     }
+    console.log(pass);
+    console.log(cliente)
     if (cliente.error) return { error: true, mensaje: cliente.mensaje }
 
-    if (cliente.id === pass) return { error: false, mensaje: "Exitoso", cliente: cliente }
+    if (cliente.clave === pass) return { error: false, mensaje: "Exitoso", cliente: cliente }
     else return { error: true, mensaje: "Error en la contraseña" }
 }
 
@@ -102,6 +104,7 @@ var existeClienteEmail = async(email) => {
 module.exports = {
     crearCliente,
     actualizarCliente,
-    login
+    login,
+    obtenerClienteID
 
 }
