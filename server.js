@@ -20,6 +20,7 @@ hbs.registerPartials(__dirname + '/views/parciales');
 
 app.use('/', routes);
 
+
 //Middlewares
 app.use(cookieParser());
 app.use(cookieSession({
