@@ -23,6 +23,29 @@ var pedidosCliente = async(id) => {
     return result.resultado
 }
 
+var pedidosProducto = async(id) => {
+    var result = await producto.obtenerPedidoCliente(i)
+    var productos = await producto.obtenerProductos()
+    var productCantidad = []
+    productos.forEach(prod => {
+        productCantidad.append({
+            id: prod.id,
+            producto: prod.nombre,
+            cantidad: 0
+        })
+    })
+    var pedidos = result.resultado;
+    pedidos.forEach(pedido => {
+        productCantidad.forEach(prod => {
+            if (pedido.id_producto === prod.id) {
+                prod.cantidad += pedido.cantidad
+            }
+        })
+    });
+    //validar eliminar pedidos con 0 cantidad
+
+    return productCantidad;
+}
 
 var fechaActual = () => {
     var hoy = new Date();
@@ -41,4 +64,11 @@ var horaActual = () => {
 
     return `${hora}:${min}:${seg}`;
 
+}
+
+
+module.exports = {
+    agregarPedido,
+    pedidosCliente,
+    pedidosProducto
 }

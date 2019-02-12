@@ -3,10 +3,9 @@ const city = require('./../model/ciudad')
 
 
 //helpers
-hbs.registerHelper('getCiudades', async(departamento) => {
-    ciudades = await city.obtenerCiudadesDep(departamento)
-    console.log(ciudades);
-    return ciudades
+hbs.registerHelper('getDepartamentos', async(departamento) => {
+    var departamentos = await city.listaDepartamentos();
+    return departamentos
 })
 
 hbs.registerHelper('capitalizar', (texto) => {

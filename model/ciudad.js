@@ -40,7 +40,7 @@ var obtenerNombreCiudad = async(codigo) => {
     let resp = await axios.get(`https://www.datos.gov.co/resource/xdk5-pm3f.json`);
     var nombre
     resp.data.forEach(function(ciudad) {
-        if (ciudad.ciudad.c_digo_dane_del_municipio === codigo) {
+        if (ciudad.c_digo_dane_del_municipio === codigo) {
             nombre = ciudad.municipio
         }
     });

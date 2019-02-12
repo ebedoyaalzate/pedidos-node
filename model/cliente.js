@@ -51,11 +51,11 @@ var login = async(user, pass) => {
     if (user.indexOf("@") < 0) {
         cliente = await obtenerClienteID(user)
     } else {
-        cliente = await obtenerClienteEmail(email)
+        cliente = await obtenerClienteEmail(user)
     }
-    if (cliente.error) return cliente
+    if (cliente.error) return { error: true, mensaje: cliente.mensaje }
 
-    if (cliente.id === pass) return { error: false, mensaje: "Exitoso" }
+    if (cliente.id === pass) return { error: false, mensaje: "Exitoso", cliente: cliente }
     else return { error: true, mensaje: "Error en la contraseña" }
 }
 

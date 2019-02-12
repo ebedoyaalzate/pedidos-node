@@ -15,7 +15,7 @@ var comprarProducto = async(producto, cantidad) => {
     var result = await productoDAO.obtenerProductoNombre(producto);
     var pdt = result.resultado[0]
     if (pdt.cantidad < cantidad) {
-        return { error: true, mensaje: 'No se encuentra suficiente cantidad' }
+        return { error: true, mensaje: 'No se encuentra suficiente cantidad del producto' }
     } else {
         var cant = pdt.cantidad - cantidad;
         await productoDAO.actualizarProducto(pdt.nombre, cant, pdt.precio)
