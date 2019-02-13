@@ -1,5 +1,31 @@
-$().ready(function() {
+$("#register").submit(function(e) {
+    var nombre = $("#nombre").val()
+    var id = $("#id").val()
+    var email = $("email").val()
+    var clave = $("clave").val()
+    var departamento = $("departamento").val()
+    var ciudad = $("ciudad").val()
+    var codigo = $("codigo").val()
+    var direccion = $("direccion").val()
+    var telefono = $("telefono").val()
+
+
+    if (nombre.length === 0 || nombre === null) {
+        if (id.length === 0 || id === null || id <= 7 || id >= 11) {
+            e.preventDefault();
+            alert("ERROR")
+        }
+    } else {
+        console.log("kdjbhnksjnd");
+        $("#register").submit()
+    }
+})
+
+/*
+$(document).ready(function() {
+    console.log("holaa");
     $("#register").validate({
+        debug: true,
         rules: {
             nombre: { required: true },
             id: { required: true, minlength: 8, maxlength: 11 },
@@ -9,7 +35,7 @@ $().ready(function() {
             ciudad: { required: true },
             codigo: { required: true },
             direccion: { required: true },
-            telefono: { minlength: 2, maxlength: 15 }
+            telefono: { required: true, minlength: 2, maxlength: 15 }
         },
         messages: {
             nombre: "Se requiere el nombre",
@@ -21,12 +47,18 @@ $().ready(function() {
             codigo: "Se requiere codigo postal",
             direccion: "Se requiere direcion",
             telefono: "Se requiere telefono"
+        },
+        invalidHandler: function(err) {
+            console.log("ksljdknksdl");
+            alert(`holaa ${err}`)
+        },
+        submitHandler: function(err) {
+            console.log("ksljdknksdl");
+            alert(`holaa ${err}`)
         }
     });
 });
-
-
-
+*/
 function ciudades() {
     $.ajax({
         type: 'post',
