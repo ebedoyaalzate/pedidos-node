@@ -23,7 +23,7 @@ function ciudades() {
         url: '/dept',
         data: { dep: $("#departamento").val() },
         success: function(respuesta) {
-            console.log(respuesta);
+            $('#ciudad').find('option').remove()
             respuesta.ciudades.forEach(ciudad => {
                 $("#ciudad").append(`<option  selected=”selected”>${ciudad}</option>`);
             });
