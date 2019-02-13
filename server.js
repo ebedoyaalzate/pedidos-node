@@ -6,8 +6,6 @@ require('./hbs/helpers');
 
 const routes = require('./routes'); //Requerimos el archivo de rutas
 
-var session = require("express-session");
-
 const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
@@ -18,14 +16,6 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/parciales');
 
 app.use('/', routes);
-
-
-//Middlewares
-app.use(session({
-    secret: '123Asdfgh',
-    resave: true,
-    saveUninitialized: true
-}));
 
 
 app.listen(port, () => {

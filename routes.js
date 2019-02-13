@@ -8,6 +8,16 @@ router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
 
 
+//sessions
+
+var session = require("express-session");
+
+router.use(session({
+    secret: '123Asdfgh',
+    resave: true,
+    saveUninitialized: true
+}));
+
 
 //modelo
 var product = require('./model/producto')
@@ -30,13 +40,14 @@ const requireUser = async(req, res, next) => { //Middleware para requerir usuari
             console.log(error);
         }
     } else {
-        return res.redirect('/index');
+        return res.redirect('/');
     }
 }
 
 router.get('/', async(req, res) => {
     //var departamentos = await city.listaDepartamentos();
-    res.render('home');
+    datos = await datosRequeridos();
+    res.render('index', datos);
 })
 
 router.post('/dept', async(req, res) => {
@@ -67,11 +78,6 @@ router.get('/home', requireUser, async(req, res) => {
     });
 })
 
-router.post('/home', requireUser, async(req, res) => {
-    var resp = await client.crearCliente(req.body)
-    console.log(resp);
-    res.render('home')
-})
 
 router.post('/register', async(req, res) => {
     var message = await client.crearCliente(req.body)
@@ -105,5 +111,30 @@ router.get('/pedidosProdcuto', requireUser, async(req, res) => {
         productCantidad
     })
 })
+
+router.get('/logout', (req, res) => {
+    req.session._id = undefined
+    res.redirect('/')
+})
+
+datosRequeridos = async() => {
+    var departamentos = await city.listaDepartamentos();
+
+    var productos = null //await product.obtenerProductos();
+    var misPedidos = null //await order.pedidosCliente("2") //cambiar id
+    var misProductos = null //await order.pedidosProducto("2")
+
+    var cliente = null //await client.obtenerClienteID("2")
+
+
+    var data = {
+        departamentos,
+        productos,
+        misPedidos,
+        misProductos
+    }
+
+    return data
+}
 
 module.exports = router;

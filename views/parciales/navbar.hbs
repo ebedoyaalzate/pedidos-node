@@ -1,12 +1,20 @@
 <nav id="navbar-example2" class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Pedidos</a>
     <ul class="nav nav-pills">
+
+        
+        {{#unless session.data.user}}
         <li class="nav-item">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#login">Login</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#register">Sign Up</a>
         </li>
+        {{else}}
+        <li class="nav-item">
+            <a class="nav-link" href="/logout" >logout</a>
+        </li>
+        {{/unless}}
     </ul>
 </nav>
 
@@ -30,6 +38,8 @@
             </div>
         {{/if}}
     {{/if}}
+
+    <h1> {{ locals._id}}</h1>
 
 
 {{>login}}

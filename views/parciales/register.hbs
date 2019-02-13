@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <!--Formulario-->
-        <form action="/" method="post">
+        <form action="/register" method="post">
           <div class="form-group">
             <label for="inputName">Complete Name</label>
             <input type="text" class="form-control" id="nombre" name="nombre"placeholder="Juan Sanchez Ortega">
@@ -34,7 +34,7 @@
               <label for="inputStat">State</label>
               <select id="departamento" class="form-control" onChange="ciudades()" name="departamento">
                   <ul class="people_list">
-                    {{#each getDepartamentos}}
+                    {{#each departamentos}}
                       <option selected>{{this}}</option>
                     {{/each}}
                   </ul>

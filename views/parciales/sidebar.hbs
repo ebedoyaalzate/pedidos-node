@@ -1,20 +1,20 @@
-<!-- Sidebar -->
-<div class="bg-light border-right" id="sidebar-wrapper">
-    <div class="sidebar-heading">Start Bootstrap </div>
-    <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
-    </div>
-</div>
-<!-- /#sidebar-wrapper -->
+<!--Sidebar de opciones cuando se incia session-->
 
-<script>
-    $("#menu-toggle").click(function (e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-</script>
+<div class="side-menu-wrapper">
+<a href="#" class="menu-close">×</a>
+<ul>
+	<li><a href="#" data-toggle="modal" data-target="#productsAv">Productos</a></li>
+	<li><a href="#" data-toggle="modal" data-target="#myOrders">Mis pedidos</a></li>
+	<li><a href="#" data-toggle="modal" data-target="#productsTotal">Productos Comprados</a></li>
+	<li><a href="#" data-toggle="modal" data-target="#">Ver perfil</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#">Editar perfil</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#">Cerrar sesion</a></li>
+
+</ul>
+</div>
+
+<!--PopUps de uso en el sidebar-->
+
+{{>productsAv}}
+{{>myOrders}}
+{{>productsTotal}}
