@@ -20,9 +20,15 @@ var order = require('./model/pedido')
 const requireUser = async(req, res, next) => { //Middleware para requerir usuario(verifico que el usuario que esta guardado en la sesion existe)
     const _id = req.session._id;
     if (_id) {
-        const user = await client.obtenerClienteID(_id);
-        res.locals.user = user;
-        next();
+        try {
+
+            const user = await client.obtenerClienteID(_id);
+            res.locals.user = user;
+            next();
+
+        } catch (error) {
+            console.log(error);
+        }
     } else {
         return res.redirect('/index');
     }
@@ -30,7 +36,7 @@ const requireUser = async(req, res, next) => { //Middleware para requerir usuari
 
 router.get('/', async(req, res) => {
     //var departamentos = await city.listaDepartamentos();
-    res.render('index');
+    res.render('home');
 })
 
 router.post('/dept', async(req, res) => {

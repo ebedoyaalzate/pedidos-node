@@ -60,7 +60,7 @@ function login() {
 }
 
 var slide_wrp = ".side-menu-wrapper"; //Menu Wrapper
-var open_button = ".menu-open"; //Menu Open Button
+var open_button = ".btn.btn-primary.btn-lg"; //Menu Open Button
 var close_button = ".menu-close"; //Menu Close Button
 var overlay = ".menu-overlay"; //Overlay
 

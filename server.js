@@ -6,8 +6,7 @@ require('./hbs/helpers');
 
 const routes = require('./routes'); //Requerimos el archivo de rutas
 
-const cookieParser = require('cookie-parser'); //Cookies
-const cookieSession = require('cookie-session'); //Middleware para las sesiones
+var session = require("express-session");
 
 const port = process.env.PORT || 3000;
 
@@ -22,14 +21,11 @@ app.use('/', routes);
 
 
 //Middlewares
-app.use(cookieParser());
-app.use(cookieSession({
-    name: 'session',
-    keys: ['key1', 'key2'],
-    // Cookie Options
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-})); //Configuracon de las sesiones
-
+app.use(session({
+    secret: '123Asdfgh',
+    resave: true,
+    saveUninitialized: true
+}));
 
 
 app.listen(port, () => {
