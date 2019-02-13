@@ -67,7 +67,7 @@ router.post('/login', async(req, res) => {
     } else {
         console.log(req.session);
         req.session._id = message.cliente.id;
-        res.render('home', { message })
+        res.redirect('home', { message })
     }
 })
 
@@ -123,8 +123,6 @@ datosRequeridos = async() => {
     var productos = null //await product.obtenerProductos();
     var misPedidos = null //await order.pedidosCliente("2") //cambiar id
     var misProductos = null //await order.pedidosProducto("2")
-
-    var cliente = null //await client.obtenerClienteID("2")
 
 
     var data = {

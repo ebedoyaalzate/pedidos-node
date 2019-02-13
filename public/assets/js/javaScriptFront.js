@@ -1,20 +1,30 @@
-function validate() {
-    if (document.getElementById('pass').value.length < 5) {
-        alert('La contraseña debe tener al menos 6 carácteres.');
+$().ready(function() {
+    $("#register").validate({
+        rules: {
+            nombre: { required: true },
+            id: { required: true, minlength: 8, maxlength: 11 },
+            email: { required: true, email: true },
+            clave: { required: true, minlength: 6 },
+            departamento: { required: true },
+            ciudad: { required: true },
+            codigo: { required: true },
+            direccion: { required: true },
+            telefono: { minlength: 2, maxlength: 15 }
+        },
+        messages: {
+            nombre: "Se requiere el nombre",
+            id: "Cedula no valida",
+            email: "Email no valido",
+            clave: "La clave debe ser mayor a 6 caracteres",
+            departamento: "Se requiere departamento",
+            ciudad: "Se requiere ciudad",
+            codigo: "Se requiere codigo postal",
+            direccion: "Se requiere direcion",
+            telefono: "Se requiere telefono"
+        }
+    });
+});
 
-    } else {
-        document.getElementById('form').submit();
-    }
-}
-
-function validateReg() {
-    if (document.getElementById('passReg').value.length < 5) {
-        alert('La contraseña debe tener al menos 6 carácteres.');
-        console.log('jhuhfekjd');
-    } else {
-        document.getElementById('formReg').submit();
-    }
-}
 
 
 function ciudades() {
@@ -43,8 +53,6 @@ function login() {
             pass: $("#pass").val()
         },
         success: function(respuesta) {
-            console.log("jhbdjjksd");
-            console.log(respuesta);
             if (!respuesta.response.error) {
                 $("#form").submit()
                 alert(respuesta)

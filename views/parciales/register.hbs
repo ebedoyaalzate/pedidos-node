@@ -10,28 +10,28 @@
       </div>
       <div class="modal-body">
         <!--Formulario-->
-        <form action="/register" method="post">
+        <form action="/register" method="post" id="register">
           <div class="form-group">
-            <label for="inputName">Complete Name</label>
+            <label for="inputName">Nombre Completo</label>
             <input type="text" class="form-control" id="nombre" name="nombre"placeholder="Juan Sanchez Ortega">
           </div>
           <div class="form-group">
-            <label for="inputID">ID</label>
+            <label for="inputID">Cedula</label>
             <input type="text" class="form-control" id="id" name="id"placeholder="1045945834">
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="inputEmail4">Email</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="Email" aria-describedby="emailHelp">
+              <input type="email" class="form-control" id="email" name="email" placeholder="correo@correo.com" aria-describedby="emailHelp">
             </div>
             <div class="form-group col-md-6">
-              <label for="inputPassword4">Password</label>
-              <input type="password" class="form-control" id="passReg" name="clave" placeholder="Password">
+              <label for="inputPassword4">Contraseña</label>
+              <input type="password" class="form-control" id="clave" name="clave" placeholder="Password">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-4">
-              <label for="inputStat">State</label>
+              <label for="inputStat">Departamento</label>
               <select id="departamento" class="form-control" onChange="ciudades()" name="departamento">
                   <ul class="people_list">
                     {{#each departamentos}}
@@ -41,7 +41,7 @@
               </select>
             </div>
             <div class="form-group col-md-4">
-              <label for="inputStat">City</label>
+              <label for="inputStat">Municipio</label>
               <select id="ciudad" class="form-control" name="ciudad">\
               </select>
             </div>
@@ -51,16 +51,16 @@
             <input type="text" class="form-control" id="codigo" name="codigo"placeholder="151420">
           </div>
           <div class="form-group">
-            <label for="inputAddress">Address</label>
+            <label for="inputAddress">Direccion</label>
             <input type="text" class="form-control" id="direccion" name="direccion" placeholder="1234 Main St">
           </div>
           <div class="form-group">
-            <label for="inputPhone">CellPhone</label>
+            <label for="inputPhone">Celular</label>
             <input type="text" class="form-control" id="telefono" name="telefono" placeholder="3219600394">
           </div>
 
 
-          <button  class="btn btn-primary" type="submit">Sign in</button>
+          <button  class="btn btn-primary" type="submit">Regsitrarse</button>
         </form>
       </div>
     </div>
