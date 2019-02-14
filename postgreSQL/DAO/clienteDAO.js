@@ -3,7 +3,6 @@ const conection = require('../conection')
 
 var insertarCliente = async(id, nombre, email, telefono, ciudad, codigo, direccion, clave) => {
     try {
-        console.log("jdheg");
         var result = await conection.query('INSERT INTO public.cliente(id, nombre, email, telefono, ciudad, codigo_postal, direccion, clave) VALUES ($1,$2,$3,$4,$5,$6,$7,$8);', [id, nombre, email, telefono, ciudad, codigo, direccion, clave])
         return { error: false, mensaje: 'Se inserto correctamente', resultado: result.rows }
     } catch {
@@ -16,7 +15,7 @@ var obtenerClienteID = async(id) => {
         var result = await conection.query('SELECT * from public.cliente where id=$1;', [id])
         return { error: false, mensaje: 'Se inserto correctamente', resultado: result.rows, rows: result.rowCount }
     } catch {
-        return { error: true, mensaje: 'No existe cliente con ese ID' }
+        return { error: true, mensaje: 'No existe usuario con ese ID' }
     }
 }
 
@@ -24,8 +23,8 @@ var obtenerClienteEmail = async(email) => {
     try {
         var result = await conection.query('SELECT * from public.cliente where email=$1;', [email])
         return { error: false, mensaje: 'Se obtuvo correctamente', resultado: result.rows, rows: result.rowCount }
-    } catch {
-        return { error: true, mensaje: 'No se obtuvo correctamente' }
+    } catch (err) {
+        return { error: true, mensaje: 'No existe usuario con ese correo' }
     }
 }
 

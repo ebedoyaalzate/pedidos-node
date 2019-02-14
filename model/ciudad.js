@@ -8,9 +8,12 @@ var listaDepartamentos = async() => {
     });
 
     departamentos = removerRepetidos(departamentos);
+
+
     return departamentos.sort();
 
 }
+
 
 var obtenerCiudadesDep = async(dep) => {
     let resp = await axios.get(`https://www.datos.gov.co/resource/xdk5-pm3f.json`);
@@ -65,10 +68,37 @@ var removerRepetidos = (arrayActual) => {
 }
 
 
+var existeDepartamento = async(departamento) => {
+    var resp = await listaDepartamentos();
+    var existe;
+    resp.forEach(dep => {
+        if (dep == departamento) {
+            existe = true
+        }
+    })
+    if (existe) return existe
+    return false
+}
+
+var existeCiudad = async(ciudad) => {
+    let resp = await axios.get(`https://www.datos.gov.co/resource/xdk5-pm3f.json`);
+    var existe
+    resp.data.forEach(function(city) {
+        if (city.municipio === ciudad) {
+            existe = true
+        }
+    });
+    if (existe) return true
+    return false
+}
+
+
 
 module.exports = {
     listaDepartamentos,
     obtenerCiudadesDep,
     obtenerCodigo,
-    obtenerNombreCiudad
+    obtenerNombreCiudad,
+    existeDepartamento,
+    existeCiudad
 }

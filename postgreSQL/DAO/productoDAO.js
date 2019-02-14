@@ -33,7 +33,7 @@ var actualizarProducto = async(nombre, cantidad, precio) => {
     try {
         var result = await conection.query('UPDATE public.producto SET nombre=$1, cantidad=$2,precio=$3 WHERE nombre=$1;', [nombre, cantidad, precio])
         return { error: false, mensaje: 'Se actualizo correctamente', resultado: result.rows }
-    } catch {
+    } catch (err) {
         return { error: true, mensaje: 'No se actualizo correctamente' }
     }
 }

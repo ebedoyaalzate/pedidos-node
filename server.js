@@ -4,7 +4,7 @@ var app = express()
 const hbs = require('hbs')
 require('./hbs/helpers');
 
-const routes = require('./routes'); //Requerimos el archivo de rutas
+const routes = require('./API/routes'); //Requerimos el archivo de rutas
 
 const port = process.env.PORT || 3000;
 
