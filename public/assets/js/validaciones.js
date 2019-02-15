@@ -10,13 +10,10 @@ $("#register").submit(function(e) {
     var telefono = $("telefono").val()
 
 
-    if (validarNombre(nombre) || validarId(id)) {
+    if (validarNombre(nombre)) {
         e.preventDefault();
         alert("ERROR")
     }
-    console.log("kdjbhnksjnd");
-    $("#register").submit()
-
 })
 
 validarNombre = (nombre) => {

@@ -1,25 +1,4 @@
-$("#register").submit(function(e) {
-    var nombre = $("#nombre").val()
-    var id = $("#id").val()
-    var email = $("email").val()
-    var clave = $("clave").val()
-    var departamento = $("departamento").val()
-    var ciudad = $("ciudad").val()
-    var codigo = $("codigo").val()
-    var direccion = $("direccion").val()
-    var telefono = $("telefono").val()
 
-
-    if (nombre.length === 0 || nombre === null) {
-        if (id.length === 0 || id === null || id <= 7 || id >= 11) {
-            e.preventDefault();
-            alert("ERROR")
-        }
-    } else {
-        console.log("kdjbhnksjnd");
-        $("#register").submit()
-    }
-})
 
 /*
 $(document).ready(function() {
