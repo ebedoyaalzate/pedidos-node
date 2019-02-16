@@ -1,7 +1,7 @@
 const pg = require('pg')
 const connectionData = {
         user: 'postgres',
-        host: 'localhost',
+        host: 'myorders.cbcgx2fbwy9w.us-east-2.rds.amazonaws.com',
         database: 'order',
         password: 'postgres',
         port: 5432,
