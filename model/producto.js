@@ -34,7 +34,7 @@ var comprarProducto = async(producto, cantidad) => {
     } else {
         var cant = pdt.cantidad - cantidad;
         await productoDAO.actualizarProducto(pdt.nombre, cant, pdt.precio)
-        return { error: false, mensaje: 'Exitoso' }
+        return { error: false, mensaje: 'Exitoso', id: result.resultado[0].id }
     }
 
 }
@@ -61,8 +61,18 @@ var existeProductoID = async(id) => {
 
 var existeProductoNombre = async(nombre) => {
     var result = await productoDAO.obtenerProductoNombre(nombre);
-    if (result.rowCount < 1) return true
+    if (result.rows > 0) return true
     else return false
+}
+
+var existeCantidadSuf = async(nombre, cantidad) => {
+    var result = await productoDAO.obtenerProductoNombre(nombre);
+    var pdt = result.resultado[0]
+    if (pdt.cantidad < cantidad) {
+        return false
+    } else {
+        return true
+    }
 }
 
 var validarProducto = (producto) => {
@@ -83,5 +93,7 @@ module.exports = {
     agregarProducto,
     comprarProducto,
     obtenerProductos,
-    obtenerProductoNombre
+    obtenerProductoNombre,
+    existeProductoNombre,
+    existeCantidadSuf
 }

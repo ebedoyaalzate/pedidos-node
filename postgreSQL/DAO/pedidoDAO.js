@@ -3,9 +3,13 @@ const conection = require('../conection')
 
 var insertarPedido = async(cantidad, fecha, hora, idProducto, idCliente) => {
     try {
-        var result = await conection.query('INSERT INTO public.pedido(cantidad, fecha, hora, id_producto, id_cliente) VALUES ($1,$2,$3,$4,$5);', [cantidad, fecha, hora, idProducto, idCliente])
+        console.log("JHGF");
+        console.log(cantidad, fecha, hora, idProducto, idCliente);
+        var result = await conection.query('INSERT INTO public.pedido(cantidad, fecha, hora, id_cliente, id_producto) VALUES ($1, $2, $3, $4, $5);', [cantidad, fecha, hora, idCliente, idProducto])
+        console.log("Jbv");
         return { error: false, mensaje: 'Se inserto correctamente', resultado: result.rows }
-    } catch {
+    } catch (err) {
+        console.log(err);
         return { error: true, mensaje: 'No se inserto correctamente' }
     }
 }

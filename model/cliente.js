@@ -126,6 +126,7 @@ module.exports = {
     crearCliente,
     actualizarCliente,
     login,
-    obtenerClienteID
+    obtenerClienteID,
+    existeClienteID
 
 }

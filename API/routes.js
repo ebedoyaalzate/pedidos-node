@@ -147,6 +147,19 @@ router.get('/listaProductos', async(req, res) => {
     }
 })
 
+router.post('/compra', async(req, res) => {
+    var resp = await order.compra(req.body);
+    if (resp.ok) {
+        res.send({
+            ok: resp.ok,
+            mensaje: resp.mensaje,
+            productos: req.body.productos
+        })
+    } else {
+        res.status(400).json(resp)
+    }
+})
+
 
 
 router.get('/home', requireUser, async(req, res) => {
