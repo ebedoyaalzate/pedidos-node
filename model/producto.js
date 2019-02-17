@@ -5,10 +5,7 @@ var agregarProducto = async(producto) => {
     if (valido.ok) {
         var result = await productoDAO.obtenerProductoNombre(producto.nombre);
         if (result.rows != 0) {
-            console.log(producto.cantidad);
-            console.log(result.resultado[0].cantidad);
             var cant = Number(result.resultado[0].cantidad) + Number(producto.cantidad);
-            console.log(cant);
             var actualizar = await productoDAO.actualizarProducto(producto.nombre, cant, producto.precio)
             if (actualizar.error) {
                 return { ok: false, mensaje: "Error a la hora de actualizar producto", status: 500 }
@@ -40,7 +37,16 @@ var comprarProducto = async(producto, cantidad) => {
 }
 
 var obtenerProductoNombre = async(nombre) => {
-    var result = await clienteDAO.obtenerProductoNombre(nombre)
+    var result = await productoDAO.obtenerProductoNombre(nombre)
+    if (result.resultado[0]) return result.resultado[0]
+    else return {
+        error: true,
+        mensaje: 'No se encontro producto'
+    }
+}
+
+var obtenerProductoID = async(id) => {
+    var result = await productoDAO.obtenerProductoID(id)
     if (result.resultado[0]) return result.resultado[0]
     else return {
         error: true,
@@ -95,5 +101,6 @@ module.exports = {
     obtenerProductos,
     obtenerProductoNombre,
     existeProductoNombre,
-    existeCantidadSuf
+    existeCantidadSuf,
+    obtenerProductoID
 }

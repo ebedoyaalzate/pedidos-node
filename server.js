@@ -1,19 +1,12 @@
 var express = require('express')
 var app = express()
 
-const hbs = require('hbs')
-require('./hbs/helpers');
-
-const routes = require('./API/routes'); //Requerimos el archivo de rutas
+const routes = require('./API/routes');
 
 const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
 
-
-//Express HBS engine
-app.set('view engine', 'hbs');
-hbs.registerPartials(__dirname + '/views/parciales');
 
 app.use('/', routes);
 

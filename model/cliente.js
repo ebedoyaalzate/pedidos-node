@@ -35,23 +35,25 @@ var crearCliente = async(cliente) => {
 }
 
 var actualizarCliente = async(cliente) => {
-    var existeClienteE = await existeClienteEmail(cliente.email);
-    var codigoCiudad = await city.obtenerCodigo(cliente.ciudad)
-    if (!existeClienteE) {
+    var validarCli = await validarCliente(cliente)
+    if (validarCli.ok) {
+        var codigoCiudad = await city.obtenerCodigo(cliente.ciudad)
         var existeClienteI = await existeClienteID(cliente.id);
-        if (!existeClienteI) {
-            await clienteDAO.insertarCliente(cliente.id, cliente.nombre, cliente.email, cliente.telefono, codigoCiudad, cliente.codigo, cliente.direccion, cliente.clave)
+        if (existeClienteI) {
+            var res = await clienteDAO.actualizarCliente(cliente.id, cliente.nombre, cliente.email, cliente.telefono, codigoCiudad, cliente.codigo, cliente.direccion, cliente.clave)
+            return {
+                ok: true,
+                mensaje: 'Se guardo correctamente el usuario'
+            }
         } else {
             return {
-                error: true,
-                mensaje: 'El id ya tiene cuenta asociada'
+                ok: false,
+                mensaje: 'No existe cliente con ese ID'
             }
         }
+
     } else {
-        return {
-            error: true,
-            mensaje: 'El correo ya tiene cuenta asociada'
-        }
+        return validarCli
     }
 }
 

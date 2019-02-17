@@ -3,7 +3,7 @@ const conection = require('../conection')
 
 var insertarProducto = async(nombre, cantidad, precio) => {
     try {
-        var result = await conection.query('INSERT INTO public.producto( nombre, cantidad,precio) VALUES (c,$2,$3);', [nombre, cantidad, precio])
+        var result = await conection.query('INSERT INTO public.producto( nombre, cantidad,precio) VALUES ($1,$2,$3);', [nombre, cantidad, precio])
         return { error: false, mensaje: 'Se inserto correctamente', resultado: result.rows }
     } catch {
         return { error: true, mensaje: 'No se inserto correctamente' }

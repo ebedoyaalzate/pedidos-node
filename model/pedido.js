@@ -5,7 +5,6 @@ const client = require('./cliente')
 var agregarPedido = async(pedido, id) => {
     try {
         var compra = await product.comprarProducto(pedido.nombre, pedido.cantidad)
-        console.log(compra);
         if (compra.error) {
             return compra
         } else {
@@ -24,31 +23,50 @@ var agregarPedido = async(pedido, id) => {
 
 var pedidosCliente = async(id) => {
     var result = await pedidoDAO.obtenerPedidoCliente(id)
-    return result.resultado
+    if (!result.error) {
+        for (pedido of result.resultado) {
+            var prod = await product.obtenerProductoID(pedido.id_producto)
+            pedido.fecha = ordenarFecha(pedido.fecha)
+            pedido.id_producto = prod.nombre
+        }
+    } else return { ok: false, mensaje: 'No se encuentran pedidos con este cliente' }
+    return { pedidos: result.resultado, ok: true }
 }
 
 var pedidosProducto = async(id) => {
-    var result = await producto.obtenerPedidoCliente(i)
-    var productos = await producto.obtenerProductos()
-    var productCantidad = []
-    productos.forEach(prod => {
-        productCantidad.append({
-            id: prod.id,
-            producto: prod.nombre,
-            cantidad: 0
-        })
-    })
-    var pedidos = result.resultado;
-    pedidos.forEach(pedido => {
-        productCantidad.forEach(prod => {
-            if (pedido.id_producto === prod.id) {
-                prod.cantidad += pedido.cantidad
-            }
-        })
-    });
-    //validar eliminar pedidos con 0 cantidad
+    var result = await pedidoDAO.obtenerPedidoCliente(id)
+    if (result.rows > 0) {
+        var productos = await product.obtenerProductos()
+        var productCantidad = []
+        for (prod of productos) {
+            productCantidad.push({
+                id: prod.id,
+                producto: prod.nombre,
+                cantidad: 0
+            })
+        }
 
-    return productCantidad;
+        var pedidos = result.resultado;
+        pedidos.forEach(pedido => {
+            productCantidad.forEach(prod => {
+                if (pedido.id_producto === prod.id) {
+                    prod.cantidad += pedido.cantidad
+                }
+            })
+        });
+
+
+        for (prod of productCantidad) {
+            var index = productCantidad.indexOf(prod)
+            if (prod.cantidad === 0) {
+                productCantidad.splice(index, 1)
+            }
+
+        }
+        return { productos: productCantidad, ok: true };
+    } else {
+        return { ok: false, mensaje: "No se obtienen pedidos del cliente" }
+    }
 }
 
 var compra = async(pedido) => {
@@ -61,7 +79,7 @@ var compra = async(pedido) => {
             if (compra.error) compraF = false
         }
         if (compraF) return { ok: true, mensaje: "Compra Realizada" }
-        else return { ok: true, mensaje: "Error en la compra" }
+        else return { ok: false, mensaje: "Error en la compra" }
     } else return valida
 }
 
@@ -91,6 +109,13 @@ var validarCompra = async(pedido) => {
             } else return { ok: false, mensaje: "Una o mas cantidades no son numericas " }
         } else return { ok: false, mensaje: "Uno o mas de los productos no existen" }
     } else return { ok: false, mensaje: "El cliente no existe" }
+}
+
+var ordenarFecha = (fecha) => {
+    var dd = fecha.getDate();
+    var mm = fecha.getMonth();
+    var yyyy = fecha.getFullYear();
+    return `${yyyy}/${mm}/${dd}`;
 }
 
 var fechaActual = () => {

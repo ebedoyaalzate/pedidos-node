@@ -26,30 +26,6 @@ var city = require('../model/ciudad')
 var order = require('../model/pedido')
 
 
-//Middleware de sesion
-const requireUser = async(req, res, next) => { //Middleware para requerir usuario(verifico que el usuario que esta guardado en la sesion existe)
-    const _id = req.session._id;
-    if (_id) {
-        try {
-
-            const user = await client.obtenerClienteID(_id);
-            res.locals.user = user;
-            next();
-
-        } catch (error) {
-            console.log(error);
-        }
-    } else {
-        return res.redirect('/');
-    }
-}
-
-router.get('/', async(req, res) => {
-    //var departamentos = await city.listaDepartamentos();
-    datos = await datosRequeridos();
-    res.render('index', datos);
-})
-
 router.get('/departamentos', async(req, res) => {
     var departamentos = await city.listaDepartamentos();
     if (departamentos) {
@@ -105,8 +81,9 @@ router.post('/login', async(req, res) => {
                 login: false
             })
         } else {
+            req.session._id = result.cliente.id
             res.send({
-                ok: false,
+                ok: true,
                 mensaje: result.mensaje,
                 login: true,
                 cliente: result.cliente
@@ -115,10 +92,31 @@ router.post('/login', async(req, res) => {
     }
 })
 
-router.put('/register', async(req, res) => {
+router.post('/logout', async(req, res) => {
+    req.session._id = undefined
+    res.send({
+        ok: true,
+        mensaje: "El usuario salio de la sesion"
+    })
+})
+
+router.post('/register', async(req, res) => {
     var resp = await client.crearCliente(req.body)
     if (resp.ok) res.send(resp)
     else res.status(400).json(resp)
+})
+
+router.post('/actualizarCliente', async(req, res) => {
+    if (req.session._id != undefined) {
+        var resp = await client.actualizarCliente(req.body)
+        if (resp.ok) res.send(resp)
+        else res.status(400).json(resp)
+    } else {
+        res.status(401).json({
+            ok: false,
+            mensaje: 'Tiene que estar autenticado'
+        })
+    }
 })
 
 router.put('/ingresarProducto', async(req, res) => {
@@ -134,92 +132,80 @@ router.put('/ingresarProducto', async(req, res) => {
 })
 
 router.get('/listaProductos', async(req, res) => {
-    var productos = await product.obtenerProductos();
-    if (productos) {
-        res.send({
-            productos
-        });
+    if (req.session._id != undefined) {
+        var productos = await product.obtenerProductos();
+        if (productos) {
+            res.send({
+                productos
+            });
+        } else {
+            res.status(500).json({
+                ok: false,
+                mensaje: "Internal error"
+            })
+        }
     } else {
-        res.status(500).json({
+        res.status(401).json({
             ok: false,
-            mensaje: "Internal error"
+            mensaje: 'Tiene que estar autenticado'
         })
     }
 })
 
 router.post('/compra', async(req, res) => {
-    var resp = await order.compra(req.body);
-    if (resp.ok) {
-        res.send({
-            ok: resp.ok,
-            mensaje: resp.mensaje,
-            productos: req.body.productos
-        })
+    if (req.session._id != undefined) {
+        var resp = await order.compra(req.body);
+        if (resp.ok) {
+            res.send({
+                ok: resp.ok,
+                mensaje: resp.mensaje,
+                productos: req.body.productos
+            })
+        } else {
+            res.status(400).json(resp)
+        }
     } else {
-        res.status(400).json(resp)
+        res.status(401).json({
+            ok: false,
+            mensaje: 'Tiene que estar autenticado'
+        })
+    }
+})
+
+router.get('/misPedidos/:id', async(req, res) => {
+    if (req.session._id != undefined) {
+        var resp = await order.pedidosCliente(req.params.id)
+        if (resp.ok) {
+            res.send({ pedidos: resp.pedidos })
+        } else {
+            res.status(400).json(resp)
+        }
+    } else {
+        res.status(401).json({
+            ok: false,
+            mensaje: 'Tiene que estar autenticado'
+        })
+    }
+
+})
+
+router.get('/misProductos/:id', async(req, res) => {
+    if (req.session._id != undefined) {
+        var resp = await order.pedidosProducto(req.params.id)
+        if (resp.ok) {
+            res.send({ pedidos: resp.productos })
+        } else {
+            res.status(400).json(resp)
+        }
+    } else {
+        res.status(401).json({
+            ok: false,
+            mensaje: 'Tiene que estar autenticado'
+        })
     }
 })
 
 
 
-router.get('/home', requireUser, async(req, res) => {
-    var productos = await product.obtenerProductos();
-    res.render('home', {
-        productos
-    });
-})
-
-
-
-
-router.post('/compra', requireUser, async(req, res) => {
-    var message = await product.comprarProducto(req.body.producto, req.body.cantidad)
-    console.log(resp);
-    res.render('home', { message })
-})
-
-router.get('/listaPedidosCliente', requireUser, async(req, res) => {
-    var pedidos = order.pedidosCliente('1');
-    res.send({
-        pedidos
-    })
-})
-
-router.get('/productosDisponibles', requireUser, async(req, res) => {
-    var productos = order.obtenerProductos();
-    res.send({
-        productos
-    })
-})
-
-router.get('/pedidosProdcuto', requireUser, async(req, res) => {
-    var productCantidad = order.pedidosProducto();
-    res.send({
-        productCantidad
-    })
-})
-
-router.get('/logout', (req, res) => {
-    req.session._id = undefined
-    res.redirect('/')
-})
-
-datosRequeridos = async() => {
-    var departamentos = await city.listaDepartamentos();
-
-    var productos = null //await product.obtenerProductos();
-    var misPedidos = null //await order.pedidosCliente("2") //cambiar id
-    var misProductos = null //await order.pedidosProducto("2")
-
-
-    var data = {
-        departamentos,
-        productos,
-        misPedidos,
-        misProductos
-    }
-
-    return data
-}
 
 module.exports = router;

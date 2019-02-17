@@ -35,7 +35,6 @@ var obtenerCodigo = async(nombre) => {
             codigo = ciudad.c_digo_dane_del_municipio
         }
     });
-    console.log(codigo);
     return codigo
 }
 
